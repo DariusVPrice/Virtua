@@ -1,3 +1,4 @@
+# imports omitted
 
 client = OpenAI(api_key=os.environ.get("OPEN_API_KEY","API_KEY_HERE"))
 
@@ -8,7 +9,7 @@ girlfriend_name = ""
 user_message = input()
 
 
-#Incoming Code
+#Incoming Code, This block is from Sinch API to handle incoming messages
 @app.route('/', methods=['POST'])
 def result():
     inbound_message = request.get_json()
@@ -27,7 +28,7 @@ def result():
     else:
         return "Invalid data", 400
 
-#ChatGPT response code
+#ChatGPT response
 response = client.chat.completions.create(
     model = "gpt-3.5-turbo",
     messages = [
@@ -41,7 +42,7 @@ response = client.chat.completions.create(
 )
 print(response.choices[0].message.content)
 
-#Send code
+#Send code, also from sinch, to and from numbers omitted
 send_batch_response = sinch_client.sms.batches.send(
     body= response.choices[0].message.content,
     to= [""],
